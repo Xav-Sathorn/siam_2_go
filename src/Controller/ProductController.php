@@ -28,9 +28,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
 {
-    /**
-     *  @Route("/{slug}", name="product_category" )
-     */
+    #[Route("/{slug}", name: "product_category")]
+
 
     public function category($slug, CategoryRepository $categoryRepository)
     {
@@ -49,9 +48,8 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{category_slug}/{slug}", name="product_show")
-     */
+    #[Route("/{category_slug}/{slug}", name: "product_show")]
+
 
     public function show($slug, ProductRepository $productRepository)
     {
@@ -68,9 +66,8 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/product/{id}/edit", name="product_edit")
-     */
+    #[Route("/admin/product/{id}/edit", name: "product_edit")]
+
 
     public function edit(
         $id,
@@ -104,9 +101,8 @@ class ProductController extends AbstractController
     }
 
 
-    /**
-     * @Route("/admin/product/create", name="product_create")
-     */
+    #[Route("/admin/product/create", name: "product_create")]
+
 
     public function create(
         FormFactoryInterface $factory,

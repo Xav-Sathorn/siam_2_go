@@ -7,53 +7,50 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-/**
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- */
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+
 class Product
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Le nom du produit est obligatoire")
-     * @Assert\Length(min=3, max=255, minMessage="Le nom du produit doit avoir au moins 3 caractères")
-     */
+
+    #[ORM\Column(type: "string", length: 255)]
+    #[Assert\NotBlank(message: "Le nom du produit est obligatoire")]
+    #[Assert\Length(min: 3, max: 255, minMessage: "Le nom du produit doit avoir au moins 3 caractères")]
+
     private $name;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="Le prix du produit est obligatoire !")
-     */
+
+    #[ORM\Column(type: "integer")]
+    #[Assert\NotBlank(message: "Le prix du produit est obligatoire !")]
+
     private $price;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+
+    #[ORM\Column(type: "string", length: 255)]
+
     private $slug;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     */
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: "products")]
+
     private $category;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Url(message="La photo principale doit être une URL valide")
-     * @Assert\NotBlank(message="La photo principale est obligatoire")
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Assert\Url(message: "La photo principale doit être une URL valide")]
+    #[Assert\NotBlank(message: "La photo principale est obligatoire")]
+
     private $mainPicture;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message = "Une description courte est obligatoire")
-     * @Assert\Length(min=20, minMessage="La description courte doit faire au moins 20 caractères")
-     */
+
+    #[ORM\Column(type: "text")]
+    #[Assert\NotBlank(message: "Une description courte est obligatoire")]
+    #[Assert\Length(min: 20, minMessage: "La description courte doit faire au moins 20 caractères")]
+
     private $shortDescription;
 
     // public static function loadValidatorMetaData(ClassMetadata $metadata)

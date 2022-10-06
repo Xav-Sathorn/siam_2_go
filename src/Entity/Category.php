@@ -12,33 +12,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- */
+
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Entrez un nom de catégorie")
-     * @Assert\Length(min=3, minMessage="Ce champ doit contenir au moins 3 caratères")
-     */
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Entrez un nom de catégorie")]
+    #[Assert\Length(min: 3, minMessage: "Ce champ doit contenir au moins 3 caratères")]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+
+    #[ORM\Column(length: 255)]
     private $slug;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="category")
-     */
+
+
+
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: "category")]
+
     private $products;
 
     public function __construct()
@@ -75,8 +72,10 @@ class Category
         return $this;
     }
 
+    //@return
+
     /**
-     * @return Collection<int, Product>
+     * @see Collection<int, Product> 
      */
     public function getProducts(): Collection
     {
