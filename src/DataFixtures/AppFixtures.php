@@ -33,18 +33,24 @@ class AppFixtures extends Fixture
 
         $admin = new User();
 
+        $hash = $this->passwordHasher->hashPassword($admin, 'password');
+
         $admin->setEmail("admin@gmail.com")
             ->setFullName("Admin")
-            ->setPassword($this->passwordHasher->hashPassword($admin, 'password'))
+            ->setPassword($hash)
             ->setRoles(['ROLE_ADMIN']);
 
         $manager->persist($admin);
 
         for ($u = 0; $u < 5; $u++) {
             $user = new User();
+
+            $hash = $this->passwordHasher->hashPassword($user, 'password');
+
+
             $user->setEmail("user$u@gmail.com")
                 ->setFullName($faker->name)
-                ->setPassword("password");
+                ->setPassword($hash);
 
             $manager->persist($user);
         }
