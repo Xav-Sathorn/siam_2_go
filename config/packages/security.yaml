@@ -10,6 +10,9 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+
+    
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -19,6 +22,15 @@ security:
             provider: app_user_provider
             custom_authenticator: App\Security\LoginFormAuthenticator
 
+            form_login:
+                login_path: security_login
+                check_path: security_login
+                username_parameter: login[email]
+                password_parameter: login[password]
+                
+            logout:
+                path: security_logout
+                target: homepage
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -30,6 +42,16 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # require ROLE_ADMIN for /admin*
+        - { path: '^/admin', roles: ROLE_ADMIN }
+
+        # or require ROLE_ADMIN or IS_AUTHENTICATED_FULLY for /admin*
+        - { path: '^/admin', roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
+
+        # the 'path' value can be any valid regular expression
+        # (this one will match URLs like /api/post/7298 and /api/comment/528491)
+        - { path: ^/api/(post|comment)/\d+$, roles: ROLE_USER }
+    
 
 when@test:
     security:
