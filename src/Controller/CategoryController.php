@@ -6,12 +6,14 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Security;
 
 class CategoryController extends AbstractController
 {
@@ -59,13 +61,33 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/admin/category/{id}/edit', name: 'category_edit')]
+    // #[IsGranted("CAN_EDIT", subject: "id", message: "Vous n'êtes pas le propriétaire de cette catégorie")]
     public function edit(
         $id,
         CategoryRepository $categoryRepository,
         Request $request,
         EntityManagerInterface $em,
+        Security $security
     ) {
         $category = $categoryRepository->find($id);
+
+        if (!$category) {
+            throw new NotFoundHttpException("Cette catégorie n'existe pas!");
+        }
+
+        // $security->isGranted('CAN_EDIT', $category);
+
+        $this->denyAccessUnlessGranted('CAN_EDIT', $category, "Vous n'êtes pas le prorpiétaire de cette catégorie");
+
+        // $user = $this->getUser();
+
+        // if (!$user) {
+        //     return $this->redirectToRoute("security_login");
+        // }
+
+        // if ($user !== $category->getOwner()) {
+        //     throw new AccessDeniedHttpException("Vous n'êtes pas le propriétaire de cette catégorie");
+        // }
 
         $form = $this->createForm(CategoryType::class, $category);
 

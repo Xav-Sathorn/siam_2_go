@@ -19,7 +19,7 @@ class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private $id;
 
     #[ORM\Column(length: 255)]
@@ -37,6 +37,9 @@ class Category
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: "category")]
 
     private $products;
+
+    #[ORM\ManyToOne(inversedBy: 'categories')]
+    private ?User $owner = null;
 
     public function __construct()
     {
@@ -100,6 +103,18 @@ class Category
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
