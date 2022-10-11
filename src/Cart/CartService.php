@@ -30,6 +30,34 @@ class CartService
         $this->requestStack->getSession()->set('cart', $cart);
     }
 
+    public function remove(int $id)
+    {
+        $cart = $this->requestStack->getSession()->get('cart', []);
+
+        unset($cart[$id]);
+
+        $this->requestStack->getSession()->set('cart', $cart);
+    }
+
+    public function decrement(int $id)
+    {
+        $cart = $this->requestStack->getSession()->get('cart', []);
+
+        if (!array_key_exists($id, $cart)) {
+            return;
+        }
+
+        // Soit le produit est à 1, Alors il faut le supprimer
+        if ($cart[$id] === 1) {
+            $this->remove($id);
+            return;
+        }
+        // Soit il est à plus de 1, Alors il faut le décrémenter
+        $cart[$id]--;
+
+        $this->requestStack->getSession()->set('cart', $cart);
+    }
+
     public function getTotal(): int
     {
         $total = 0;
