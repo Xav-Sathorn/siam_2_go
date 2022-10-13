@@ -12,11 +12,23 @@ class CartService
     protected $requestStack;
     protected $productRepository;
 
+
     public function __construct(RequestStack $requestStack, ProductRepository $productRepository)
     {
         $this->requestStack = $requestStack;
         $this->productRepository = $productRepository;
     }
+
+    protected function saveCart(array $cart)
+    {
+        $this->requestStack->getSession()->set('cart', $cart);
+    }
+
+    public function epmty()
+    {
+        $this->saveCart([]);
+    }
+
     public function add(int $id)
     {
         $cart = $this->requestStack->getSession()->get('cart', []);
@@ -75,6 +87,13 @@ class CartService
         return $total;
     }
 
+
+
+    /**
+     * 
+     *
+     * @return CartItem []
+     */
     public function getDetailledCartItems(): array
     {
 
