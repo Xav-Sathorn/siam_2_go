@@ -19,6 +19,14 @@ class CategoryType extends AbstractType
 
                     'placeholder' => 'Tapez le nom de la catégorie'
                 ]
+                ])
+
+            ->add('slug', TextType::class, [
+                'label' => 'URL',
+                'attr' => [
+
+                    'placeholder' => 'ex: plat-a-emporter'
+                ]
             ]);
     }
 

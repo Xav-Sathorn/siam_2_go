@@ -3,6 +3,8 @@
 namespace App\Controller\Purchase;
 
 use App\Entity\User;
+use App\Entity\Purchase;
+use App\Repository\PurchaseRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,6 +45,31 @@ class PurchasesListController extends AbstractController
         //3. Nous voulons passer l'utilisateur connecté à Twig afin d'afficher ses commandes ->Environment de Twig / Response
         return $this->render('purchase/index.html.twig', [
             'purchases' => $user->getPurchases()
+        ]);
+        // $html = $this->twig->render('purchase/index.html.twig', [
+        //     'purchases' => $user->getPurchases()
+        // ]);
+        // return new Response($html);
+    }
+
+
+    #[Route('/purchases/{id}', name: 'purchases_details')]
+    #[IsGranted('ROLE_USER', message: "Vous devez être connecté pour accéder à vos commandes !")]
+    public function purchaseDetails($id, PurchaseRepository $purchaseRepositorys)
+    {
+        $purchase = $purchaseRepositorys->find($id);
+
+       
+        // if (!$user) {
+        //     //Redirection -> redirectResponse
+        //     //Générer une URL en fonction du nom d'une route -> UrlGenerator ou RouterInterface
+        //     throw new AccessDeniedException("Vous devez être connecté pour accéder à vos commandes !");
+        // }
+        //2. Nous voulons savoir QUI est connecté? -> Security
+        //3. Nous voulons passer l'utilisateur connecté à Twig afin d'afficher ses commandes ->Environment de Twig / Response
+        return $this->render('purchase/details.html.twig', [
+            'purchases' => $purchase->getPurchaseItems(),
+            'total' => $purchase->getTotal()
         ]);
         // $html = $this->twig->render('purchase/index.html.twig', [
         //     'purchases' => $user->getPurchases()

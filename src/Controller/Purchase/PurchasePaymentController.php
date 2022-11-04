@@ -45,8 +45,8 @@ class PurchasePaymentController extends AbstractController
 
        //dd($paymentIntent);
 
-       
+    
         return new JsonResponse('{"clientSecret" :"'.$paymentIntent->client_secret.'"}');
-       
+    
     }
 };

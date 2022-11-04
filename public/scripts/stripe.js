@@ -125,6 +125,7 @@
       document.querySelector("#submit").disabled = false;
       document.querySelector("#spinner").classList.add("hidden");
       document.querySelector("#button-text").classList.remove("hidden");
+      window.location.href = "{{ url('purchase_payment_success', {'id':purchase.id})}}"
     }
   }
 

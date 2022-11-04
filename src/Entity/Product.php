@@ -43,8 +43,8 @@ class Product
     private $category;
 
     #[ORM\Column(type: "string", length: 255)]
-    #[Assert\Url(message: "La photo principale doit être une URL valide")]
-    #[Assert\NotBlank(message: "La photo principale est obligatoire")]
+    //#[Assert\Url(message: "La photo principale doit être une URL valide")]
+    //#[Assert\NotBlank(message: "La photo principale est obligatoire")]
 
     private $mainPicture;
 

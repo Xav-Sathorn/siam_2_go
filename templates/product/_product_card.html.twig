@@ -1,5 +1,8 @@
 <div class="card">
-	<img src="{{ p.mainPicture }}" class="img-fluid" alt="image du produit">
+	<a href="{{path('product_show', {'category_slug':p.category.slug, 'slug': p.slug})}}">
+
+		<img class="img-fluid" src="{{ image_product_directory | imagine_filter('my_thumb') }}/{{ p.mainPicture }} " alt="{{p.name}}">
+	</a>
 	<card-body>
 		<h4 class="card-title">{{ p.name }}
 			({{ p.price / 100}}

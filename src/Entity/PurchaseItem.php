@@ -13,8 +13,8 @@ class PurchaseItem
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'purchaseItems')]
-    private ?Product $product = null;
+    #[ORM\Column]
+    private ?string $product = null;
 
     #[ORM\ManyToOne(inversedBy: 'purchaseItems')]
     #[ORM\JoinColumn(nullable: false)]
@@ -44,7 +44,7 @@ class PurchaseItem
 
     public function setProduct(?Product $product): self
     {
-        $this->product = $product;
+        $this->product = $product->getId();
 
         return $this;
     }

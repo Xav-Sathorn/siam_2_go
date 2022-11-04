@@ -18,19 +18,43 @@
 		<div class="col">
 			{{form_row(formView.name)}}
 			{{form_row(formView.price)}}
+			{{form_row(formView.shortDescription)}}
 		</div>
 		<div class="col">
 			{{form_row(formView.mainPicture)}}
 			{{form_row(formView.category)}}
-			{{form_row(formView.shortDescription)}}
+			<div class='accordion-button d-block text-center mt-4'>
+				<button type="submit" class="btn btn-outline-success text-uppercase">
+					<i class="fas fa-save"></i>
+					éditer le produit
+				</button>
+				{% if is_granted('ROLE_ADMIN') %}
+					<badge class="badge bg-outline-danger text-uppercase">
+						<a href="{{path("product_delete", {'id':product.id})}}" onclick="if(!confirm('Etes-vous sûr ?')) { return false; }" class="btn btn-outline-danger">
+							<i class="fa-solid fa-trash-can"></i>
+							Supprimer produit</a>
+					</badge>
+				{% endif %}
+			</div>
 		</div>
 	</div>
-
-
-	<button type="submit" class="btn btn-warning">
-		<i class="fas fa-save"></i>
-		Créer le produit
-	</button>
-
 	{{form_end (formView)}}
 {% endblock %}
+
+{# <div class='accordion-button d-block text-center mt-4'>
+
+		<button type="submit" class="btn btn-outline-success  text-uppercase">
+			<i class="fas fa-save"></i>
+			Enregistrer
+		</button>
+
+		{% if is_granted('ROLE_ADMIN') %}
+
+			<li class="badge bg-outline-danger">
+				<a href="{{path("category_delete", {'id':category.id})}}" onclick="if(!confirm('Etes-vous sûr ?')) { return false; }" class="btn btn-outline-danger">
+					<i class="fa-solid fa-trash-can"></i>
+					Supprimer catégorie</a>
+			</li>
+
+		{% endif %}
+	</div> #}

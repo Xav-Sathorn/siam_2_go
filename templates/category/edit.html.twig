@@ -11,12 +11,22 @@
 	{{form_start(formView)}}
 
 	{{form_widget(formView)}}
+	<div class='accordion-button d-block text-center mt-4'>
 
-	<button type="submit" class="btn btn-primary mt-4">
-		<i class="fas fa-save">
+		<button type="submit" class="btn btn-outline-success text-uppercase">
+			<i class="fas fa-save"></i>
 			Enregistrer
-		</i>
-	</button>
+		</button>
 
+		{% if is_granted('ROLE_ADMIN') %}
+
+			<li class="badge bg-outline-danger text-uppercase">
+				<a href="{{path("category_delete", {'id':category.id})}}" onclick="if(!confirm('Etes-vous sûr ?')) { return false; }" class="btn btn-outline-danger">
+					<i class="fa-solid fa-trash-can"></i>
+					Supprimer catégorie</a>
+			</li>
+
+		{% endif %}
+	</div>
 	{{form_end (formView)}}
 {% endblock %}

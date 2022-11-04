@@ -17,19 +17,21 @@
 		<div class="col">
 			{{form_row(formView.name)}}
 			{{form_row(formView.price)}}
+			{{form_row(formView.shortDescription)}}
 		</div>
 		<div class="col">
 			{{form_row(formView.mainPicture)}}
 			{{form_row(formView.category)}}
-			{{form_row(formView.shortDescription)}}
+			<div class='text-center mt-4'>
+				<button type="submit" class="btn btn-outline-success text-uppercase ">
+					<i class="fas fa-save"></i>
+					Créer le produit
+				</button>
+			</div>
+
 		</div>
 	</div>
 
-
-	<button type="submit" class="btn btn-warning">
-		<i class="fas fa-save"></i>
-		Créer le produit
-	</button>
 
 	{{form_end (formView)}}
 

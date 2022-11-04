@@ -11,6 +11,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use App\Form\DataTransformer\CentimesTansformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,10 +48,37 @@ class ProductType extends AbstractType
                     'placeholder' => 'Tapez le prix du produit en €'
                 ], 'divisor' => 100
             ])
-            ->add('mainPicture', UrlType::class, [
+            
+            /*->add('mainPicture', UrlType::class, [
                 'label' => 'Image du produit',
-                'attr' => ['placeholder' => 'Tapez une image d\'image !']
+                'attr' => ['placeholder' => 'Tapez une url d\'image !']
+            ])*/
+
+            ->add('mainPicture', FileType::class, [
+                'label' => 'Photo',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5000k',
+                        'mimeTypes' => [
+                            'image/gif',
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez choisir une image (PNG, JPG ou GIF)',
+                    ])
+                ],
             ])
+            
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',
                 'placeholder' => '-- Choisir une catégorie --',

@@ -4,16 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CategoryController extends AbstractController
 {
@@ -45,7 +46,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $category->setSlug(strtolower($slugger->slug($category->getName())));
+            $category->setSlug(strtolower($slugger->slug($category->getSlug())));
 
             $em->persist($category);
             $em->flush();
@@ -56,18 +57,20 @@ class CategoryController extends AbstractController
         $formView = $form->createView();
 
         return $this->render('category/create.html.twig', [
+            'category' => $category,
             'formView' => $formView
         ]);
     }
 
-    #[Route('/admin/category/{id}/edit', name: 'category_edit')]
+    #[Route('/admin/category/edit/{id}', name: 'category_edit')]
     // #[IsGranted("CAN_EDIT", subject: "id", message: "Vous n'êtes pas le propriétaire de cette catégorie")]
     public function edit(
         $id,
         CategoryRepository $categoryRepository,
         Request $request,
         EntityManagerInterface $em,
-        Security $security
+        Security $security,
+        SluggerInterface $slugger
     ) {
         $category = $categoryRepository->find($id);
 
@@ -80,6 +83,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $category->setSlug(strtolower($slugger->slug($category->getSlug())));
 
             $em->flush();
 
@@ -92,5 +96,33 @@ class CategoryController extends AbstractController
             'category' => $category,
             'formView' => $formView
         ]);
+    }
+
+    #[Route("/admin/category/delete/{id}", name: "category_delete", requirements: ['id' => '\d+'])]
+    
+    public function deleteCategory($id, CategoryRepository $categoryRepository, EntityManagerInterface $em, Request $request)
+    {
+        // catégorie par défaut Accueil
+        $defaultCategory = $categoryRepository->find("1");
+
+        // on recherche la catégorie actuelle
+        $category = $categoryRepository->find($id);
+
+        // on recupére la liste des produits de la catégorie
+        $productsCat = $category->getProducts();
+
+        
+        foreach($productsCat as $product)
+        {
+            // on affecte les produits à la catégorie par defaut (Accueil - 1)
+            $product->setCategory($defaultCategory);
+            $em->persist($product);
+        }
+       
+
+        $em->remove($category);
+        $em->flush();
+
+        return $this->redirectToRoute('homepage');
     }
 }

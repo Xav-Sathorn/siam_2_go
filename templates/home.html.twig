@@ -5,12 +5,14 @@
 {% endblock %}
 
 {% block body %}
-
-	<h1>Nos produits phares
+	<div class="text-center">
+		<a class="navbar-brand" href="/"><img src="\img\logo\logo.png" height="200" alt="logo"></a>
+	</div>
+	<h1 class="text-center mb-4">Suggestions de la semaine
 	</h1>
 	<div class="row">
 		{% for p in products %}
-			<div class="col">
+			<div class="col-md-4 col-sm-12">
 				{% include "product/_product_card.html.twig" %}
 			</div>
 		{% endfor %}
@@ -19,7 +21,7 @@
 	<h2>Un service irréprochable</h2>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste cumque rem sint aliquam fuga at consequuntur harum natus necessitatibus ducimus.</p>
 
-	<div class="row">
+	<div class="row mb-4">
 		{% include "shared/_assurance.html.twig" with {
             'color': 'primary',
             'icone': 'fas fa-truck',
@@ -36,4 +38,9 @@
             'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea praesentium deleniti, asperiores in nobis id!'
         }%}
 	</div>
+	{% block footer %}
+		<div class='row text-center'>
+			<h6>©x.coenen</h6>
+		</div>
+	{% endblock %}
 {% endblock %}
