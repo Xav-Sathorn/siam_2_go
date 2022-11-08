@@ -25,7 +25,7 @@ class CategoryType extends AbstractType
                 'label' => 'URL',
                 'attr' => [
 
-                    'placeholder' => 'ex: plat-a-emporter'
+                    'placeholder' => 'ex: plat à emporter'
                 ]
             ]);
     }
