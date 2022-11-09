@@ -2,6 +2,7 @@
 
 namespace App\Controller\Purchase;
 
+use App\Cart\CartService;
 use Stripe\Stripe;
 use App\Entity\Purchase;
 
@@ -56,7 +57,7 @@ class PurchasePaymentController extends AbstractController
 
     
     #[Route('/purchase/validation/{id}', name: 'payment_success', methods: ['GET'])]
-    public function success_payment(MailerInterface $mailer, Purchase $purchase, EntityManagerInterface $em )
+    public function success_payment(MailerInterface $mailer, Purchase $purchase, EntityManagerInterface $em , CartService $cartService)
     {
         $purchase->setStatus('PAID');
         $email = (new TemplatedEmail())
@@ -71,12 +72,11 @@ class PurchasePaymentController extends AbstractController
 
         //Send Comfirm Email 
         $this->addFlash('success', "La commande a été payée est confirmée !");
-        return $this->redirectToRoute("purchase_index");
-
         
         $em->flush();
         $mailer->send($email);
-
-       return $this->render('purchase/payment.html.twig', []);
+        $cartService->epmty();
+        
+        return $this->redirectToRoute("purchase_index");
     }
 };

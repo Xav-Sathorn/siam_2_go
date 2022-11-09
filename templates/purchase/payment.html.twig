@@ -20,6 +20,10 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://js.stripe.com/v3/"></script>
+	<script>
+		let user_id = "{{ id }}"
+console.log('user_id', user_id);
+	</script>
 	<script type='module' src="{{ asset("scripts/payment.js") }}"></script>
 	<script type='module' src="{{ asset("scripts/stripe.js") }}"></script>
 

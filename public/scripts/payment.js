@@ -17,18 +17,18 @@ export class Payments {
             this.elements = this.stripe.elements({ clientSecret });
             const style = {
                 base: {
-                  color: "#32325d",
+                  color: "#F8F8FF",
                   fontFamily: 'Arial, sans-serif',
                   fontSmoothing: "antialiased",
                   fontSize: "16px",
                   "::placeholder": {
-                    color: "#32325d"
+                    color: "#808080"
                   }
                 },
                 invalid: {
                   fontFamily: 'Arial, sans-serif',
                   color: "#fa755a",
-                  iconColor: "#fa755a"
+                  iconColor: "#FF69B4"
                 }
               };
             
@@ -80,6 +80,15 @@ export class Payments {
         }
 
         // setLoading(false);
-        window.location.href ='/purchase/validation/160'
+       
+         /* window.location.href='question.php?_id=$_id';
+         window.alert('Thank You! Your answer is online now.') */
+       
+
+/*       let url = "{{ path("payment_success" , { 'id': purchase.id }) }}"
+url = url.replace("id", this.value);
+
+window.location.href = url; */
+        window.location.href ="/purchase/validation/"+ user_id
       }
 }
